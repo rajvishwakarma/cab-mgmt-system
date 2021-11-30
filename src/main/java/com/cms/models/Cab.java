@@ -31,9 +31,10 @@ public class Cab {
 	
 	private CabStatus status;
 	private Date lastIdleStatusTS = new Date();
+	private Driver driver;
 
 	public Cab(Integer id, String cab, String model, String make, String year, String owner, City currentCity,
-			CabStatus status) {
+			CabStatus status, Driver driver) {
 		this.id = id;
 		this.cab = cab;
 		this.model = model;
@@ -42,6 +43,7 @@ public class Cab {
 		this.owner = owner;
 		this.currentCity = currentCity;
 		this.status = status;
+		this.driver = driver;
 	}
 	
 }

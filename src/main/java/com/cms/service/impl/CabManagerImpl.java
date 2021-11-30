@@ -163,6 +163,9 @@ public class CabManagerImpl implements ICabManager{
 
 		long diff = 0;
 		for (CabHistory cabHistory : cabHistroy) {
+			if(!CabStatus.IDLE.equals(cabHistory.getStatus()))
+				continue;
+			
 			if(cabHistory.getStartTS().after(start))
 				start = cabHistory.getStartTS();
 

@@ -9,4 +9,6 @@ public interface IBookingManager {
 	public Booking bookCab(City from, City to, User user);
 
 	public Booking endTrip(Booking booking);
+
+	public void getDemandCities();
 }

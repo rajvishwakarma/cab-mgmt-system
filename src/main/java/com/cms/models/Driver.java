@@ -2,20 +2,11 @@ package com.cms.models;
 
 import com.cms.constants.Role;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-public class User extends BaseUser {
-
-	private Role role = Role.USER;
+public class Driver extends BaseUser {
 	
-	public User(Integer id, String firstName, String lastName, Boolean enabled, String mobile) {
+	Role role = Role.DRIVER;
+	
+	public Driver(Integer id, String firstName, String lastName, Boolean enabled, String mobile) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -39,7 +30,7 @@ public class User extends BaseUser {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Driver other = (Driver) obj;
 		if (mobile == null) {
 			if (other.mobile != null)
 				return false;

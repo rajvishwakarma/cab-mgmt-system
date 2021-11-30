@@ -1,8 +1,14 @@
 package com.cms.service.impl;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.cms.constants.CabStatus;
 import com.cms.models.Booking;
@@ -30,7 +36,7 @@ public class BookManagerImpl implements IBookingManager {
 	public Booking bookCab(City from, City to, User user) {
 		List<Cab> cabs = (List<Cab>) cabManager.searchCabs(from);
 
-		Booking booking = new Booking(UUID.randomUUID().toString(), from, to, cabs.get(0), user);
+		Booking booking = new Booking(UUID.randomUUID().toString(), from, to, cabs.get(0), (User)user);
 
 		bookingMap = this.storageManager.getBookingData();
 		bookingMap.put(booking.getId(), booking);
@@ -48,10 +54,30 @@ public class BookManagerImpl implements IBookingManager {
 		booking.setPrice(Math.random()*100);
 		booking.setDistance(booking.getPrice().toString());
 		booking.setStatus("TASK COMPLETED");
+		bookingMap = this.storageManager.getBookingData();
 		bookingMap.put(booking.getId(), booking);
 		
 		cabManager.updateCabStatus(booking, CabStatus.IDLE);
+		cabManager.updateCabCurrentLocation(booking.getCab().getCab(), booking.getTo());
 		return booking;
+	}
+
+	@Override
+	public void getDemandCities() {
+		
+		Map<String, Integer> recordMap = new HashMap<>();
+		
+		bookingMap = this.storageManager.getBookingData();
+		bookingMap.values().stream().forEach(booking -> {
+			if(recordMap.containsKey(booking.getFrom().getName()))
+				recordMap.put(booking.getFrom().getName(), recordMap.get(booking.getFrom().getName()) + 1);
+			else
+				recordMap.put(booking.getFrom().getName(), 1);
+		});
+		
+		System.out.println("Top 5 Cities having more demand in descending order");
+		recordMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+		.limit(5).forEach(entry -> System.out.println(entry.getKey()));
 	}
 
 	

@@ -4,16 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cms.models.BaseUser;
 import com.cms.models.Booking;
 import com.cms.models.Cab;
 import com.cms.models.CabHistory;
 import com.cms.models.City;
-import com.cms.models.User;
 import com.cms.service.IStorageManager;
 
 public class StorageManagerImpl implements IStorageManager {
 	
-	private Map<String, User> userData;
+	private Map<String, BaseUser> userData;
     private Map<String, Cab> cabData;
     private Map<String, City> cityData;
     private Map<String, Booking> bookingData;
@@ -30,7 +30,7 @@ public class StorageManagerImpl implements IStorageManager {
     }
 
 	@Override
-	public Map<String, User> getUserData() {
+	public Map<String, BaseUser> getUserData() {
 		return userData;
 	}
 
