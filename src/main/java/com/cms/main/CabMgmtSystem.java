@@ -1,6 +1,9 @@
 package com.cms.main;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -85,7 +88,7 @@ public class CabMgmtSystem {
 		cityManager.createCity(new City(9, "Hyderabad", true));
 		cityManager.createCity(new City(10, "Bangalore", true));
 		System.out.println("On Boarded Cities:");
-		cityManager.getAllCities().stream().forEach(city -> System.out.println(city.getName()));
+		cityManager.getAllCities().stream().filter(Objects::nonNull).forEach(city -> System.out.println(city.getName()));
 		System.out.println();
 		
 		cabManager.createCab(new Cab(1, "MH01A0001", "Swift", "Suzuki", "2021", "XYZ", cityManager.getCity("Mumbai"), CabStatus.IDLE, (Driver)driver1));
@@ -98,7 +101,7 @@ public class CabMgmtSystem {
 		cabManager.createCab(new Cab(8, "MH01A0008", "Swift", "Suzuki", "2021", "XYZ", cityManager.getCity("Mumbai"), CabStatus.IDLE, (Driver)driver8));
 		
 		System.out.println("On Boarded Cabs:");
-		cabManager.getAllCabs().stream()
+		cabManager.getAllCabs().stream().filter(Objects::nonNull)
 			.forEach(cab -> System.out.println("Cab: " + cab.getCab() + ", Current City: " + cab.getCurrentCity().getName() + ", Status: " + cab.getStatus()));
 		System.out.println();
 		
@@ -113,7 +116,9 @@ public class CabMgmtSystem {
 		cabManager.searchCabs(cityManager.getCity("Mumbai")).stream()
 			.forEach(cab -> System.out.println("Cab: " + cab.getCab() + " - " + cab.getLastIdleStatusTS()));
 		
-		bookingManager.bookCab(cityManager.getCity("Mumbai"), cityManager.getCity("Hyderabad"), (User)user1);
+		System.out.println();
+		System.out.println("Booking Cab for User1 with city: Mumbai");
+		Booking booking = bookingManager.bookCab(cityManager.getCity("Mumbai"), cityManager.getCity("Hyderabad"), (User)user1);
 		
 		System.out.println();
 		System.out.println("Current Cab Status:");
@@ -127,7 +132,13 @@ public class CabMgmtSystem {
 		cabManager.searchCabs(cityManager.getCity("Mumbai")).stream()
 			.forEach(cab -> System.out.println("Cab: " + cab.getCab()));
 		
-        Booking booking = bookingManager.bookCab(cityManager.getCity("Mumbai"), cityManager.getCity("Jaipur"), (User)user1);
+		System.out.println();
+		System.out.println("Booking Cab for User2 with city: Mumbai");
+        Booking booking1 = bookingManager.bookCab(cityManager.getCity("Mumbai"), cityManager.getCity("Jaipur"), (User)user2);
+		
+		System.out.println();
+		System.out.println("Booking Cab for User2 with city: Nashik");
+        Booking booking2 = bookingManager.bookCab(cityManager.getCity("Nashik"), cityManager.getCity("Jaipur"), (User)user2);
 		
 		System.out.println();
 		System.out.println("Current Cab Status:");

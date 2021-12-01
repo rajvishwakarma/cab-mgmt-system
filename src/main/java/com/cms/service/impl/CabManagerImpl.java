@@ -4,11 +4,15 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import com.cms.constants.CabStatus;
 import com.cms.exception.CabAlreadyExistsException;
@@ -125,7 +129,12 @@ public class CabManagerImpl implements ICabManager{
 
 	@Override
 	public Collection<Cab> searchCabs(City city) {
-		return cabCityMap.get(city).stream()
+		
+		List<Cab> cabs = cabCityMap.get(city);
+		if(CollectionUtils.isEmpty(cabs))
+			return Collections.EMPTY_LIST;
+		
+		return cabs.stream()
 				.filter(cab -> cab.getStatus().equals(CabStatus.IDLE) && cab.getEnabled())
 				.sorted(Comparator.comparing(Cab::getLastIdleStatusTS))
 				.collect(Collectors.toList());

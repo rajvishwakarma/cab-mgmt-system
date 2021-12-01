@@ -1,14 +1,12 @@
 package com.cms.service.impl;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import com.cms.constants.CabStatus;
 import com.cms.models.Booking;
@@ -35,6 +33,10 @@ public class BookManagerImpl implements IBookingManager {
 	@Override
 	public Booking bookCab(City from, City to, User user) {
 		List<Cab> cabs = (List<Cab>) cabManager.searchCabs(from);
+		if(CollectionUtils.isEmpty(cabs)) {
+			System.out.println("No Cab Found!");
+			return null;
+		}
 
 		Booking booking = new Booking(UUID.randomUUID().toString(), from, to, cabs.get(0), (User)user);
 
